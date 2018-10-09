@@ -16,7 +16,8 @@ CREATE TABLE BOOKS (
   RELEASE_DATE integer NOT NULL DEFAULT 2018,
   PUBLISHER varchar(30),
   GENRE integer NOT NULL references GENRES,
-  PAGES integer
+  PAGES integer,
+  IS_NEW boolean DEFAULT TRUE
 );
 --EBOOKS?
 
