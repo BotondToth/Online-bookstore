@@ -35,18 +35,18 @@ public class SaleController {
     }
 
     @GetMapping("/all/{purchaseDate}")
-    public List<Sale> getSalesByPurchaseDate(final String purchaseDate) throws ParseException {
+    public List<Sale> getSalesByPurchaseDate(@PathVariable final String purchaseDate) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy dd MMMM", Locale.getDefault());
         Date date = format.parse(purchaseDate);
         return saleService.getSalesByDate(date);
     }
 
     @GetMapping("/{userName}")
-    public List<Sale> getSalesByUserName(final String userName) {
+    public List<Sale> getSalesByUserName(@PathVariable final String userName) {
         return saleService.getSalesByUserName(userName);
     }
 
-    @PostMapping
+    @PostMapping("/sale")
     public ResponseEntity createSale(@PathVariable final SaleDTO saleDTO) {
         return saleService.createSale(SaleEntityAndDTOMapper.convertDTOToEntity(saleDTO));
     }
