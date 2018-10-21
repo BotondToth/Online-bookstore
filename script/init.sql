@@ -43,6 +43,43 @@ CREATE TABLE REGULAR_CUSTOMERS (
   LEVEL integer NOT NULL DEFAULT 1
 );
 
-INSERT INTO GENRES VALUES (1, 'action');
+INSERT INTO GENRES VALUES (1,'Regény');
+INSERT INTO GENRES VALUES (2,'Életrajzok, visszaemlékezések');
+INSERT INTO GENRES VALUES (3,'Szakirodalom');
+INSERT INTO GENRES VALUES (4, 'Szakácskönyv');
+INSERT INTO GENRES VALUES (5, 'Humor');
+INSERT INTO GENRES VALUES (6, 'Hobbi');
+INSERT INTO GENRES VALUES (7, 'Újság');
 
 INSERT INTO BOOKS VALUES ('9789634065906', 'Eredet', 'Dan Brown', 2018, 'Gabo', 1, 573);
+INSERT INTO BOOKS VALUES ('9789636893453', 'A Da Vinci-kód', 'Dan Brown', 2010, 'Gabo', 1, 648);
+INSERT INTO BOOKS VALUES ('9789634065449', 'Angyalok és démonok', 'Dan Brown', 2010, 'Gabo', 1, 708);
+INSERT INTO BOOKS VALUES ('9780552172134', 'Inferno', 'Dan Brown', 2016, 'Gabo', 1, 620);
+
+INSERT INTO BOOKS VALUES ('9789634059578', 'Diana utolsó nyara', 'Antonio Caprarica', 2018, 'Európa', 2, 200);
+INSERT INTO BOOKS VALUES ('9789633245989', 'Íróportrék', 'Szegő András', 2018, 'Central Kiadói Csoport Kft.', 2, 216);
+INSERT INTO BOOKS VALUES ('9789631437713', 'Napló', 'Radnóti Miklós', 2018, 'Gabo', 2, 480);
+INSERT INTO BOOKS VALUES ('9789631365283', 'A magányos város', 'Olivia Laing', 2018, 'Corvina Kiadó Kft.', 2, 278);
+INSERT INTO BOOKS VALUES ('9789632785561', 'Kortalan kortársaink', 'Kun Zsuzsa', 2018, 'Cser Kiadó Kft.', 2, 192);
+INSERT INTO BOOKS VALUES ('9789634791515', 'Az ismeretlen Kimi Räikkönen', 'Kari Hotakainen', 2018, 'Helikon Kiadó Kft.', 2, 264);
+INSERT INTO BOOKS VALUES ('9786150022024', 'Hétköznapi hősök', 'Aszalós Szilvia', 2018, 'Hit Rádió', 2, 165);
+
+INSERT INTO BOOKS VALUES ('9786155477447', 'KEZDŐ HACKEREK KÉZIKÖNYVE', 'Fehér Krisztián', 2016, 'BBS-INFO Kft.', 3, 223);
+INSERT INTO BOOKS VALUES ('9786155477614', 'ALKALMAZÁSFEJLESZTÉS ANDROID STUDIO RENDSZERBEN', 'Fehér Krisztián', 2018, 'BBS-INFO Kft.', 3, 151);
+INSERT INTO BOOKS VALUES ('9786155477607', 'DIRECT2D', 'Fehér Krisztián', 2018, 'BBS-INFO Kft.', 3, 150);
+INSERT INTO BOOKS VALUES ('9789630992640', 'Ogilvy a reklámról a digitális korban', 'Miles Young ', 2018, 'Kossuth Kiadó Zrt..', 3, 288);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
