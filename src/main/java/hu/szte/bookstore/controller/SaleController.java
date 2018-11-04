@@ -19,8 +19,9 @@ import java.util.Locale;
  * @author Botond
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/sale")
-public class SaleController {
+public class SaleController extends BaseController {
 
     private final SaleServiceImpl saleService;
 
@@ -47,7 +48,7 @@ public class SaleController {
     }
 
     @PostMapping("/sale")
-    public ResponseEntity createSale(@PathVariable final SaleDTO saleDTO) {
+    public ResponseEntity createSale(@RequestBody final SaleDTO saleDTO) {
         return saleService.createSale(SaleEntityAndDTOMapper.convertDTOToEntity(saleDTO));
     }
 

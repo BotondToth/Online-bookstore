@@ -1,6 +1,7 @@
 package hu.szte.bookstore.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class User implements Serializable {
 
     @Id
