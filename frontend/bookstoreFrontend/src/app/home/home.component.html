@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Könyvesbolt</a>
+  <form class="form-inline">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Keresés</button>
+  </form>
+</nav>
+
+<div class="grid-container">
+    <div class="grid-item" *ngFor="let book of books">
+        <p>Ide jön majd a borító</p>
+        <!--<img class="card-img-top" src= <%= car.cover %> width="180" height="300" alt="">-->
+         <h3 class="book-title">
+            <a>{{ book.title }}</a>
+         </h3>
+         <div>
+            <h5>1000 Ft</h5>
+            <p class="card-text">{{ book.author }}</p>
+            <p class="card-text">{{ book.isbn }}</p>
+         </div>
+    </div>
+</div>
