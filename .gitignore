@@ -1,4 +1,4 @@
-frontend/bookstoreFrontend/node_modules/*
-target/*
+/frontend/bookstoreFrontend/node_modules/*
 .idea/*
+target/*
 bookstore.iml

@@ -45,4 +45,7 @@ public class Book {
     @Column(name = "IS_NEW")
     private boolean isNew;
 
+    @Column(name = "PRICE")
+    private int price;
+
 }
