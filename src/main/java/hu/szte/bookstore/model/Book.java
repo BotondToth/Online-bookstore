@@ -46,6 +46,6 @@ public class Book {
     private boolean isNew;
 
     @Column(name = "PRICE")
-    private boolean price;
+    private int price;
 
 }
