@@ -35,7 +35,7 @@ public class BookstoreControllerTest {
 
     @Before
     public void setup() throws BookNotFoundException {
-        when(bookStoreService.getBookByIsbn("isbn")).thenReturn(new Book("isbn", "title", "author", 2018, "publisher", 1, 676, true , 2000));
+        when(bookStoreService.getBookByIsbn("isbn")).thenReturn(new Book("isbn", "title", "author", 2018, "publisher", 1, 676, true , 2000, null));
         when(bookStoreService.getBookByIsbn("false")).thenReturn(null);
         when(bookStoreService.getAllBooks()).thenReturn(initMockedBooks());
 
@@ -83,10 +83,10 @@ public class BookstoreControllerTest {
 
     private List<Book> initMockedBooks() {
         final List<Book> books = new ArrayList<>();
-        books.add(new Book("isbn1", "title1", "author1", 2017, "publisher", 1, 676, true, 2000));
-        books.add(new Book("isbn2", "title2", "author2", 2017, "publisher", 1, 676, true, 2000));
-        books.add(new Book("isbn3", "title3", "author3", 2017, "publisher", 1, 676, true, 2000));
-        books.add(new Book("isbn4", "title4", "author4", 2017, "publisher", 1, 676, true, 2000));
+        books.add(new Book("isbn1", "title1", "author1", 2017, "publisher", 1, 676, true, 2000, null));
+        books.add(new Book("isbn2", "title2", "author2", 2017, "publisher", 1, 676, true, 2000, null));
+        books.add(new Book("isbn3", "title3", "author3", 2017, "publisher", 1, 676, true, 2000, null));
+        books.add(new Book("isbn4", "title4", "author4", 2017, "publisher", 1, 676, true, 2000, null));
         return books;
     }
 

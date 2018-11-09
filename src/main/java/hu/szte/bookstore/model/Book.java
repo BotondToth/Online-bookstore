@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -47,5 +44,8 @@ public class Book {
 
     @Column(name = "PRICE")
     private int price;
+
+    @Column(name = "COVER")
+    private String cover;
 
 }

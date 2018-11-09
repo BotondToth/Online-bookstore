@@ -46,10 +46,10 @@ public class SearchControllerTest {
     private List<Book> createSearchBook() {
 
         final List<Book> books = new ArrayList<>();
-        books.add(new Book("isbn1", "title1", "author1", 2017, "publisher", 1, 676, true, 1000));
-        books.add(new Book("isbn2", "title2", "author2", 2017, "publisher", 1, 676, true, 1000));
-        books.add(new Book("isbn3", "title3", "author3", 2017, "publisher", 1, 676, true,1000));
-        books.add(new Book("isbn4", "title4", "author4", 2017, "publisher", 1, 676, true,1000));
+        books.add(new Book("isbn1", "title1", "author1", 2017, "publisher", 1, 676, true, 1000, null));
+        books.add(new Book("isbn2", "title2", "author2", 2017, "publisher", 1, 676, true, 1000, null));
+        books.add(new Book("isbn3", "title3", "author3", 2017, "publisher", 1, 676, true,1000, null));
+        books.add(new Book("isbn4", "title4", "author4", 2017, "publisher", 1, 676, true,1000, null));
         return books;
     }
 

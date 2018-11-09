@@ -12,13 +12,18 @@ Készítők:
 
 
 Az alkalmazás futtatásához szükséges:
+<ul>
     <li>Java 8+</li>
     <li>Angular 5</li>
     <li>PostgreSQL</li>
+</ul>
     
 Az adatbázis az alapértelmezett porton (5432), az alapértelmezett url-en keresztül érhető el.
+
+<b>FONTOS</b>: a superuser jelszavát át kell írni a megfelelőre a properties fájlban!
+
 Inicializálásához a script mappában található init.sql használható
 
 A frontend modul a frontend/bookstoreFrontend mappában az npm install, majd ng serve paranccsal indítható. Ezután a 4200 porton keresztül lehet elérni az alkalmazást.
-A backend modul az mvn clean install, majd mvn spring-boot:run parancsok kiadása után indul el a 8080-as porton.
 
+A backend modul az mvn clean install, majd mvn spring-boot:run parancsok kiadása után indul el a 8080-as porton.
