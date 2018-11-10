@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http'
 import { HttpClient } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
@@ -11,15 +12,27 @@ export class HomeComponent implements OnInit {
 
   private books = [];
 
-  constructor(private httpClient: HttpClient) {
+  private book: any[];
+
+  constructor(private httpClient: HttpClient, private modalService: NgbModal) {
     this.get_books()
   }
 
   get_books(){
     this.httpClient.get('http://localhost:8080/books/all').subscribe((res : any[])=>{
-      console.log(res);
       this.books = res;
     });
+  }
+
+  openDialog(isbn: string, content) {
+    this.httpClient.get('http://localhost:8080/books/isbn/'+isbn).subscribe((res : any[])=>{
+      this.book = res;
+    });
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
+  buyItem(isbn: string) {
+    console.log(isbn);
   }
 
   ngOnInit() {

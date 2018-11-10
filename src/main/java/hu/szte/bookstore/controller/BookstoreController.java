@@ -29,12 +29,12 @@ public class BookstoreController extends BaseController {
         return bookstoreService.getAllBooks();
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public String getBooksByTitle(@PathVariable final String title) {
         return createGsonFromObject(bookstoreService.getBooksByTitle(title));
     }
 
-    @GetMapping("/{isbn}")
+    @GetMapping("/isbn/{isbn}")
     public String getBookByIsbn(@PathVariable final String isbn) throws BookNotFoundException {
         return createGsonFromObject(bookstoreService.getBookByIsbn(isbn));
     }

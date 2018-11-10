@@ -19,10 +19,7 @@
               </h4>
               <h5>{{ book.price }} Ft</h5>
               <p class="card-text">Szerző: {{book.author}}</p>
-              <div class="card-footer">
-                <small class="text-muted">Kiadó: {{book.publisher}}</small>
-                <button class="btn btn-lg btn-outline-primary" (click)="openDialog()">Bővebben</button>
-              </div>
+              <button class="btn btn-lg btn-outline-primary" (click)="openDialog(book.isbn, content)">Bővebben</button>
             </div>
         </div>
       </div>
@@ -30,3 +27,47 @@
 
   </div>
 </body>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{book?.title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <img src={{book?.cover}} alt="">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>Cím: </td>
+          <td>{{book?.title}}</td>
+        </tr>
+        <tr>
+          <td>Szerző: </td>
+          <td>{{book?.author}}</td>
+        </tr>
+        <tr>
+          <td>ISBN: </td>
+          <td>{{book?.isbn}}</td>
+        </tr>
+        <tr>
+          <td>Kiadási év: </td>
+          <td>{{book?.releaseDate}}</td>
+        </tr>
+        <tr>
+          <td>Oldalszám: </td>
+          <td>{{book?.pages}}</td>
+        </tr>
+        <tr>
+          <td>Ár: </td>
+          <td>{{book?.price}} Ft</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
+    <button type="button" class="btn btn-danger" (click)="buyItem(book.isbn)">Kosárba</button>
+  </div>
+</ng-template>
