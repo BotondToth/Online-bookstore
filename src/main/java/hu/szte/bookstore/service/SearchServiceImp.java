@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * A keresessel kapcsolatos service metodusok gyujtohelye
  * @author Roland
- *
- * Teszteli a SearchService getBooksBySearch() függvényét
  */
 
 @Service
@@ -26,7 +25,11 @@ public class SearchServiceImp {
     }
 
     public List<Book> getBooksBySearch(final SearchDTO searchDTO) {
-
         return bookRepository.findAllByTitleAndAuthor(searchDTO.getTitle(), searchDTO.getAuthor());
     }
+
+    public List<Book> getBooksByTitle(final String title) {
+        return bookRepository.findByTitleContainingIgnoreCase(title);
+    }
+
 }
