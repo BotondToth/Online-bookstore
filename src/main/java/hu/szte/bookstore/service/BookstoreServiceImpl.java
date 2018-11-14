@@ -38,10 +38,6 @@ public class BookstoreServiceImpl {
         return bookRepository.findAll();
     }
 
-    public List<Book> getBooksByTitle(final String title) {
-        return bookRepository.findAllByTitle(title);
-    }
-
     public Book getBookByIsbn(final String isbn) throws BookNotFoundException {
         final Book book = bookRepository.findByIsbn(isbn);
         if (book == null) {
