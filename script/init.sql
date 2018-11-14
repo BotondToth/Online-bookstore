@@ -12,9 +12,9 @@ CREATE TABLE GENRES (
 CREATE TABLE BOOKS (
   ISBN varchar(13) PRIMARY KEY NOT NULL UNIQUE,
   TITLE varchar(50),
-  AUTHOR varchar(30),
+  AUTHOR varchar(50),
   RELEASE_DATE integer NOT NULL DEFAULT 2018,
-  PUBLISHER varchar(30),
+  PUBLISHER varchar(50),
   GENRE integer NOT NULL references GENRES,
   PAGES integer,
   PRICE integer,
@@ -78,9 +78,9 @@ INSERT INTO BOOKS VALUES ('9789630793735', 'A prágai temető', 'Umberto Eco', 2
 INSERT INTO BOOKS VALUES ('9789630795760', 'A Foucault-inga', 'Umberto Eco', 2015, 'Európa Könyvkiadó Kft.', 1, 820,4058,true,'https://s03.static.libri.hu/cover/df/6/2225954_5.jpg');
 
 INSERT INTO BOOKS VALUES ('9789630796606', 'A legendás földek és helyek története', 'Umberto Eco', 2013, 'Európa Könyvkiadó Kft.', 1, 478,7999,true,'https://s04.static.libri.hu/cover/e5/9/887429_5.jpg');
-INSERT INTO BOOKS VALUES ('9789634067221', 'A katedrális', 'Ken Follett', 2017, 'Gabo Kiadó', 1, 973,4486,true,'https://s03.static.libri.hu/cover/89/e/4037692_5.jpg');
-INSERT INTO BOOKS VALUES ('9789634065296', 'Az idők végezetéig', 'Ken Follett', 2017, 'Gabo Kiadó', 1, 3900,true,'https://s03.static.libri.hu/cover/0d/4/4037691_5.jpg');
-INSERT INTO BOOKS VALUES ('9789636892302', 'A Tű a szénakazalban', 'Ken Follett', 2008, 'Gabo Kiadó', 1, 376,2800,true,'https://s01.static.libri.hu/cover/b5/0/734160_4.jpg');
+INSERT INTO BOOKS VALUES ('9789634067221', 'A katedrális', 'Ken Follett', 2017, 'Gabo Kiadó', 1, 973, 4486, true,'https://s03.static.libri.hu/cover/89/e/4037692_5.jpg');
+INSERT INTO BOOKS VALUES ('9789634065296', 'Az idők végezetéig', 'Ken Follett', 2017, 'Gabo Kiadó', 1, 200, 3900, true,'https://s03.static.libri.hu/cover/0d/4/4037691_5.jpg');
+INSERT INTO BOOKS VALUES ('9789636892302', 'A Tű a szénakazalban', 'Ken Follett', 2008, 'Gabo Kiadó', 1, 376,2800, true,'https://s01.static.libri.hu/cover/b5/0/734160_4.jpg');
 
 INSERT INTO BOOKS VALUES ('9789632520667', 'Goriot apó', 'Honoré de Balzac', 2012, 'Akkord Kiadó KFT.', 1,356,1500,true,'https://s05.static.libri.hu/cover/9a/e/847739_5.jpg');
 INSERT INTO BOOKS VALUES ('9789633292983', 'Hivatalnokok', 'Honoré de Balzac', 2011, 'Fapadoskönyv Kiadó', 1, 240,3120,true,'https://s01.static.libri.hu/cover/25/4/829319_5.jpg');
