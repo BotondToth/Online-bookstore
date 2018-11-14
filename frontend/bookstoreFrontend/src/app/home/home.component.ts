@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http'
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -33,6 +32,13 @@ export class HomeComponent implements OnInit {
 
   buyItem(isbn: string) {
     console.log(isbn);
+  }
+
+  titleSearch() {
+    let inputValue = (<HTMLInputElement>document.getElementById('searchBar')).value;
+    this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
+      this.books = res;
+    });
   }
 
   ngOnInit() {

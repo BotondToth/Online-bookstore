@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * A keresessel kapcsolatos endpoint-ok kontrollere
  * @author Roland
- * Keresni lehet szerzőre és címre
  */
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/search")
-public class SearchController {
+public class SearchController extends BaseController {
 
 
     private SearchServiceImp searchService;
@@ -25,11 +25,15 @@ public class SearchController {
     public SearchController(SearchServiceImp searchService) {
         this.searchService = searchService;
     }
+
     @GetMapping("/book")
     public List<Book> getSerchBooks(@RequestParam final SearchDTO searchDTO) {
         return searchService.getBooksBySearch(searchDTO);
     }
 
-
+    @GetMapping("/{title}")
+    public String getBooksByTitle(@PathVariable final String title) {
+        return createGsonFromObject(searchService.getBooksByTitle(title));
+    }
 
 }
