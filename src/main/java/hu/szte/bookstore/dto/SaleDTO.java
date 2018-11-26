@@ -1,33 +1,24 @@
 package hu.szte.bookstore.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Botond
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SaleDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "USERNAME")
-    private String userName;
-
-    @Column(name = "purchase_date")
-    private Date purchaseDate;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "purchased_item")
-    private String purchasedItem;
+    private List<String> purchasedItems;
 }

@@ -1,8 +1,10 @@
 package hu.szte.bookstore.controller;
 
+import hu.szte.bookstore.dto.RegistrationDTO;
 import hu.szte.bookstore.dto.UserDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import hu.szte.bookstore.model.User;
+import hu.szte.bookstore.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,14 +16,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
-    @GetMapping("/login")
-    public ResponseEntity login(@RequestBody final UserDTO userDTO) {
+    private final UserServiceImpl userService;
 
-
-
-        return new ResponseEntity(HttpStatus.OK);
+    @Autowired
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody final UserDTO userDTO) {
+        final User user = userService.getUserByEmail(userDTO.getEmail());
+        if (user == null) {
+            return "";
+        }
+        if (!user.getEmail().equals(userDTO.getEmail())) {
+            return "";
+        }
+        if (!user.getPassw().equals(userDTO.getPassword())) {
+            return "";
+        }
+        return "ok";
+    }
 
+    @PostMapping("/register")
+    public User register(@RequestBody RegistrationDTO registrationDTO) {
+        final User user = new User(registrationDTO.getEmail(),registrationDTO.getFirstName(), registrationDTO.getLastName(), registrationDTO.getPassword());
+        return userService.register(user);
+    }
 
 }

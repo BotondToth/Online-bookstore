@@ -47,7 +47,7 @@ public class SaleController extends BaseController {
         return saleService.getSalesByUserName(userName);
     }
 
-    @PostMapping("/sale")
+    @PostMapping("/add")
     public ResponseEntity createSale(@RequestBody final SaleDTO saleDTO) {
         return saleService.createSale(SaleEntityAndDTOMapper.convertDTOToEntity(saleDTO));
     }

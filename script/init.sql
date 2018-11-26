@@ -23,10 +23,9 @@ CREATE TABLE BOOKS (
 );
 
 CREATE TABLE USERS (
-  USERNAME varchar(20) PRIMARY KEY UNIQUE NOT NULL,
   FIRST_NAME varchar(15),
   LAST_NAME varchar(15),
-  EMAIL varchar(30) UNIQUE,
+  EMAIL varchar(30) PRIMARY KEY UNIQUE NOT NULL,
   PASSW varchar(200)
 );
 
@@ -96,4 +95,6 @@ INSERT INTO BOOKS VALUES ('9789631437218', 'A hobbit', 'J. R. R. Tolkien', 2018,
 INSERT INTO BOOKS VALUES ('9789634058397', 'A Gyűrűk Ura I-III.', 'J. R. R. Tolkien', 2018, 'Európa Könyvkiadó Kft.', 1, 1836,12398,true,'https://s03.static.libri.hu/cover/50/e/4173195_5.jpg');
 INSERT INTO BOOKS VALUES ('9789632785301', 'Hímzés kereten - 20 modern hímzésötlet', 'Cristin Morgan', 2018, 'CSER KÖNYVKIADÓ ÉS KER. Kft.',6 , 128,2200,true,'https://s03.static.libri.hu/cover/61/9/4870061_5.jpg');
 INSERT INTO BOOKS VALUES ('9789632799964', 'WTF? - Miért rajtunk múlik, hogy mit hoz a jövő?', 'Tim O Reilly', 2018, 'Typotex Elektronikus Kiadó Kft.', 3, 473,3750,true,'https://s03.static.libri.hu/cover/75/a/4843285_5.jpg');
+
+INSERT INTO USERS VALUES ('proba', 'felhasznalo', 'tothboti@gmail.com', 'bookstore');
 

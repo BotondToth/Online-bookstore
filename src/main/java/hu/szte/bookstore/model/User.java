@@ -19,17 +19,14 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @Column(name = "USERNAME")
-    private String userName;
+    @Column(name = "EMAIL")
+    private String email;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
 
     @Column(name = "LAST_NAME")
     private String lastName;
-
-    @Column(name = "EMAIL")
-    private String email;
 
     @Column(name = "PASSW")
     private String passw;

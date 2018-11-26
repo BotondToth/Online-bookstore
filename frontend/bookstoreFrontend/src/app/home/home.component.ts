@@ -13,6 +13,12 @@ export class HomeComponent implements OnInit {
 
   private book: any[];
 
+  private user: any[];
+
+  private basket: any[];
+
+  private loggedIn: boolean;
+
   constructor(private httpClient: HttpClient, private modalService: NgbModal) {
     this.get_books()
   }
@@ -30,15 +36,89 @@ export class HomeComponent implements OnInit {
     this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
   }
 
-  buyItem(isbn: string) {
-    console.log(isbn);
-  }
-
   titleSearch() {
     let inputValue = (<HTMLInputElement>document.getElementById('searchBar')).value;
     this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
       this.books = res;
     });
+  }
+
+  loginPanel(content) {
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
+  openRegisterModal(content) {
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
+  login() {
+    let userNameInput = (<HTMLInputElement>document.getElementById('userNameInput')).value;
+    let passwordInput = (<HTMLInputElement>document.getElementById('passwordInput')).value;
+    var data = {};
+    data['email'] = userNameInput;
+    data['password'] = passwordInput;
+    this.httpClient.post('http://localhost:8080/user/login', data, { responseType: 'text' }).subscribe((res : string)=>{
+        if (res=="") {
+          alert('Rossz email cím vagy jelszó!');
+        } else {
+          this.loggedIn = true;
+          this.basket = new Array();
+          var hiddenElemens = document.getElementById("logoutBtn");
+          hiddenElemens.style.display = "block";
+          hiddenElemens = document.getElementById("loginBtn");
+          hiddenElemens.style.display = "none";
+          hiddenElemens = document.getElementById("basketBtn");
+          hiddenElemens.style.display = "block";
+        }
+    });
+
+  }
+
+  addToBasket(isbn: string) {
+    if (this.loggedIn == true) {
+      this.basket.push(isbn);
+    } else {
+      alert('A vásárláshoz jelentkezzen be!');
+    }
+  }
+
+  checkout() {
+    var data = {};
+    data['purchasedItems'] = this.basket;
+    if (this.loggedIn == true) {
+      this.httpClient.post('http://localhost:8080/sale/add', data, { responseType: 'text' });
+    }
+
+  }
+
+  logout() {
+    this.loggedIn = false;
+    var hiddenElemens = document.getElementById("logoutBtn");
+    hiddenElemens.style.display = "none";
+    hiddenElemens = document.getElementById("loginBtn");
+    hiddenElemens.style.display = "block";
+    hiddenElemens = document.getElementById("basketBtn");
+    hiddenElemens.style.display = "none";
+  }
+
+  register() {
+    let firstNameInput = (<HTMLInputElement>document.getElementById('firstNameInput')).value;
+    let lastNameInput = (<HTMLInputElement>document.getElementById('lastNameInput')).value;
+    let passwordInput = (<HTMLInputElement>document.getElementById('registerPasswordInput')).value;
+    let passwordAgainInput = (<HTMLInputElement>document.getElementById('registerPasswordInputAgain')).value;
+    let emailInput = (<HTMLInputElement>document.getElementById('registerInputEmail')).value;
+    var data = {};
+    data['email'] = emailInput;
+    data['password'] = passwordInput;
+    data['firstName'] = firstNameInput;
+    data['lastName'] = lastNameInput;
+    if (passwordInput == passwordAgainInput) {
+      this.httpClient.post('http://localhost:8080/user/register',data, { responseType: 'text' }).subscribe((res : string)=>{
+        console.log(res);
+      });
+    } else {
+      alert('Jelszó nem egyezik!')
+    }
   }
 
   ngOnInit() {

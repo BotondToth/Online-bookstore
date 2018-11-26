@@ -3,6 +3,9 @@
   <form class="form-inline">
     <input id="searchBar" class="form-control mr-sm-2" type="search" placeholder="Keresés" aria-label="Search">
     <button class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="titleSearch()">Keresés</button>
+    <button id="loginBtn" class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="loginPanel(loginContent)">Bejelentkezés</button>
+    <button id="logoutBtn" class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="logout()">Kijelentkezés</button>
+    <button id="basketBtn" class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="openBasket(basketContent)">Kosár</button>
   </form>
 </nav>
 
@@ -68,6 +71,81 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
-    <button type="button" class="btn btn-danger" (click)="buyItem(book.isbn)">Kosárba</button>
+    <button type="button" class="btn btn-danger" (click)="addToBasket(book.isbn)">Kosárba</button>
+  </div>
+</ng-template>
+
+<ng-template #loginContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Bejelentkezés</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   <div class="form-group">
+       <label for="username">Felhasználónév</label>
+       <input id="userNameInput" type="text" class="form-control" aria-describedby="usernameHelp" placeholder="Felhasználónév">
+     </div>
+     <div class="form-group">
+       <label for="password">Jelszó</label>
+       <input id="passwordInput" type="password" class="form-control" placeholder="Jelszó">
+     </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="openRegisterModal(registerContent)">Regisztráció</button>
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
+    <button type="button" class="btn btn-danger" (click)="login()">Bejelentkezés</button>
+  </div>
+</ng-template>
+
+<ng-template #registerContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Regisztráció</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+     <div class="form-group">
+
+       <label for="emailInput">Email</label>
+       <input id="registerInputEmail" type="email" class="form-control" aria-describedby="usernameHelp" placeholder="Felhasználónév">
+
+       <label for="firstNameInput">Vezetéknév</label>
+       <input id="firstNameInput" type="text" class="form-control" aria-describedby="usernameHelp" placeholder="Vezetéknév">
+
+       <label for="lastNameInput">Keresztnév</label>
+       <input id="lastNameInput" type="text" class="form-control" aria-describedby="usernameHelp" placeholder="Keresztnév">
+
+       <label for="passwordInput">Jelszó</label>
+       <input id="registerPasswordInput" type="password" class="form-control" placeholder="Jelszó">
+
+       <label for="passwordInputAgain">Jelszó újra</label>
+       <input id="registerPasswordInputAgain" type="password" class="form-control" placeholder="Jelszó újra">
+
+     </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
+    <button type="button" class="btn btn-danger" (click)="register()">Regisztrálás</button>
+  </div>
+</ng-template>
+
+<ng-template #basketContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Kosár</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+     <div class="form-group">
+       <!-- Itt kell majd kiirni a konyveket -->
+     </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
+    <button type="button" class="btn btn-danger" (click)="checkout()">Vásárlás</button>
   </div>
 </ng-template>
