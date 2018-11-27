@@ -102,6 +102,7 @@ export class HomeComponent implements OnInit {
   }
 
   register() {
+
     let firstNameInput = (<HTMLInputElement>document.getElementById('firstNameInput')).value;
     let lastNameInput = (<HTMLInputElement>document.getElementById('lastNameInput')).value;
     let passwordInput = (<HTMLInputElement>document.getElementById('registerPasswordInput')).value;
