@@ -1,6 +1,8 @@
 package hu.szte.bookstore.service;
 
+import hu.szte.bookstore.model.Book;
 import hu.szte.bookstore.model.Sale;
+import hu.szte.bookstore.repository.BookRepository;
 import hu.szte.bookstore.repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,14 @@ import java.util.List;
 @Service
 public class SaleServiceImpl {
     private final SalesRepository salesRepository;
+    private final BookRepository bookRepository;
+
+    private final static Long SALE_ID = 0L;
 
     @Autowired
-    public SaleServiceImpl(SalesRepository salesRepository) {
+    public SaleServiceImpl(SalesRepository salesRepository, BookRepository bookRepository) {
         this.salesRepository = salesRepository;
+        this.bookRepository = bookRepository;
     }
 
     public List<Sale> getSalesByDate(final Date date) {
@@ -36,13 +42,22 @@ public class SaleServiceImpl {
     }
 
 
-    public ResponseEntity createSale(final Sale sale) {
+    public ResponseEntity createSale(final List<String> books, String username) {
         try {
-            salesRepository.save(sale);
+            books.forEach(isbn -> {
+                final Book book = getBookByISBN(isbn);
+                final Sale sale = new Sale(SALE_ID, username, new Date(), "", isbn);
+                salesRepository.save(sale);
+            });
             //create invoice here...
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    public Book getBookByISBN(final String isbn) {
+        return bookRepository.findByIsbn(isbn);
+    }
+
 }
