@@ -66,10 +66,10 @@ public class SaleController extends BaseController {
         if(!basket.isEmpty()){
             final ResponseEntity sale = saleService.createSale(basket, username);
             if (sale.equals( new ResponseEntity(HttpStatus.OK))) {
-                emailSenderService.sendEmailAboutOrder(userService.getUserByEmail(username));
+                emailSenderService.sendEmailAboutOrder(userService.getUserByEmail(username), this);
+                basket.clear();
                 return "Ok";
             }
-            basket.clear();
         }
         return "Hiba";
     }

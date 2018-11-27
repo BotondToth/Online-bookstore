@@ -34,17 +34,15 @@ public class EmailSenderServiceImpl {
 
     private static final Logger log = Logger.getLogger(EmailSenderServiceImpl.class.getName());
 
-    @Value("${spring.mail.username}")
-    private String username;
+    private String username = "konyvesbolt2018@gmail.com";
 
-    @Value("${spring.mail.password}")
     private String passw = "konyvesbolt";
 
-    @Autowired
     private SaleController saleController;
 
-    public void sendEmailAboutOrder(final User user) throws DocumentException, IOException {
-        log.info("Sending email to: " + " , about order");
+    public void sendEmailAboutOrder(final User user, final SaleController saleController) throws DocumentException, IOException {
+        this.saleController = saleController;
+        log.info("Sending email to: " + user.getEmail() + " , about order");
         Properties props = createProperties();
 
         Session session = Session.getInstance(props,
@@ -85,7 +83,7 @@ public class EmailSenderServiceImpl {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.port", "587");
         return props;
     }
 
@@ -103,7 +101,7 @@ public class EmailSenderServiceImpl {
         PdfPTable table = new PdfPTable(4);
         PdfPTable priceTable = new PdfPTable(2);
         Paragraph userDetails = new Paragraph("Vevo neve: " + user.getLastName() + " " + user.getFirstName(), new Font(Font.FontFamily.HELVETICA, 12));
-        Paragraph sellerDetails = new Paragraph("Számlát kibocsátó adatai: Könyvesbolt Kft., 1061 Budapest, Andrássy út 4.");
+        Paragraph sellerDetails = new Paragraph("Számlát kibocsátó adatai: Könyvesbolt Kft.");
         sellerDetails.setSpacingAfter(30);
         userDetails.setAlignment(Element.ALIGN_LEFT);
         userDetails.setPaddingTop(50);
@@ -147,7 +145,6 @@ public class EmailSenderServiceImpl {
 
     private void addContentRows(PdfPTable table, final User user) {
         for (Book book : saleController.getBasket()) {
-            System.err.println(book.toString());
             table.addCell(book.getTitle());
             table.addCell(book.getAuthor());
             table.addCell(book.getPublisher());
@@ -160,7 +157,6 @@ public class EmailSenderServiceImpl {
 
         final int fullPrice = saleController.getBasketTotalSum();
         double noVAT = fullPrice * 0.73;
-        double reducedPrice = fullPrice;
         final String noVatFormatted = String.format("%.2f", noVAT);
         priceTable.addCell("Nettó ár:");
         priceTable.addCell(noVatFormatted + " Ft");
@@ -169,13 +165,12 @@ public class EmailSenderServiceImpl {
         priceTable.addCell(fullPrice + " Ft");
 
         priceTable.addCell("Fizetendő összeg:");
-        priceTable.addCell(Math.round(reducedPrice) + " Ft");
+        priceTable.addCell(Math.round((double) fullPrice) + " Ft");
 
         priceTable.completeRow();
     }
 
     public LocalDate getTodaysDate() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return LocalDate.now();
     }
 

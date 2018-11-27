@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
 
   checkout() {
     if (this.loggedIn == true) {
-      this.httpClient.get('http://localhost:8080/sale/add/'+this.username ,  { responseType: 'text' }).subscribe((res : any[])=>{
+      this.httpClient.get('http://localhost:8080/sale/add/'+this.username ,  { responseType: 'text' }).subscribe((res : string)=>{
         if(res == "Ok"){
           alert("Köszönjük a vásárlást");
         }
