@@ -65,15 +65,12 @@
 			<version>5.5.10</version>
 		</dependency>
 
-<<<<<<< HEAD
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.6</version>
 		</dependency>
 
-=======
->>>>>>> 73bd060fdba9a7015a8f795ed833453ec0bbb306
 		<!-- <dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
