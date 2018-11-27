@@ -3,9 +3,12 @@ package hu.szte.bookstore.controller;
 import hu.szte.bookstore.dto.RegistrationDTO;
 import hu.szte.bookstore.dto.UserDTO;
 import hu.szte.bookstore.model.User;
+import hu.szte.bookstore.service.EmailSenderServiceImpl;
 import hu.szte.bookstore.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 
 /**
  *
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController extends BaseController {
 
     private final UserServiceImpl userService;
+
+    private EmailSenderServiceImpl emailSenderService = new EmailSenderServiceImpl();
 
     @Autowired
     public UserController(UserServiceImpl userService) {
@@ -39,8 +44,9 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody RegistrationDTO registrationDTO) {
+    public User register(@RequestBody RegistrationDTO registrationDTO) throws MessagingException {
         final User user = new User(registrationDTO.getEmail(),registrationDTO.getFirstName(), registrationDTO.getLastName(), registrationDTO.getPassword());
+        emailSenderService.sendEmailAboutRegistration(user);
         return userService.register(user);
     }
 
