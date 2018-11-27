@@ -24,12 +24,11 @@ public class UserServiceImpl {
         return userRepository.findAll();
     }
 
-    public User getUserByUserName(final String userName) {
-        return userRepository.findByUserName(userName);
-    }
-
     public User getUserByEmail(final String email) {
         return userRepository.findByEmail(email);
     }
 
+    public User register(User user) {
+        return userRepository.save(user);
+    }
 }
