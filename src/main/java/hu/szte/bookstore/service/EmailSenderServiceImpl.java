@@ -147,6 +147,7 @@ public class EmailSenderServiceImpl {
 
     private void addContentRows(PdfPTable table, final User user) {
         for (Book book : saleController.getBasket()) {
+            System.err.println(book.toString());
             table.addCell(book.getTitle());
             table.addCell(book.getAuthor());
             table.addCell(book.getPublisher());
