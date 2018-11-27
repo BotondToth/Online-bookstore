@@ -100,7 +100,7 @@ public class EmailSenderServiceImpl {
         ending.setPaddingTop(50);
         PdfPTable table = new PdfPTable(4);
         PdfPTable priceTable = new PdfPTable(2);
-        Paragraph userDetails = new Paragraph("Vevo neve: " + user.getLastName() + " " + user.getFirstName(), new Font(Font.FontFamily.HELVETICA, 12));
+        Paragraph userDetails = new Paragraph("Vevő neve: " + user.getLastName() + " " + user.getFirstName(), new Font(Font.FontFamily.HELVETICA, 12));
         Paragraph sellerDetails = new Paragraph("Számlát kibocsátó adatai: Könyvesbolt Kft.");
         sellerDetails.setSpacingAfter(30);
         userDetails.setAlignment(Element.ALIGN_LEFT);
@@ -133,7 +133,7 @@ public class EmailSenderServiceImpl {
     }
 
     private void addTableHeader(PdfPTable table) {
-        Stream.of("Cím", "Szerzo", "Megvásárolt db", "Ár")
+        Stream.of("Cím", "Szerző")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -147,7 +147,6 @@ public class EmailSenderServiceImpl {
         for (Book book : saleController.getBasket()) {
             table.addCell(book.getTitle());
             table.addCell(book.getAuthor());
-            table.addCell(book.getPublisher());
         }
 
         table.completeRow();
