@@ -24,8 +24,8 @@ public class SearchServiceImp {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> getBooksBySearch(final SearchDTO searchDTO) {
-        return bookRepository.findAllByTitleAndAuthor(searchDTO.getTitle(), searchDTO.getAuthor());
+    public List<Book> getBooksBySearch(final String title,final String author,final String genre) {
+        return bookRepository.findAllByTitleOrAuthorOrGenreIgnoreCase(title, author, genre);
     }
 
     public List<Book> getBooksByTitle(final String title) {

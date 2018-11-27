@@ -26,9 +26,9 @@ public class SearchController extends BaseController {
         this.searchService = searchService;
     }
 
-    @GetMapping("/book")
-    public List<Book> getSerchBooks(@RequestParam final SearchDTO searchDTO) {
-        return searchService.getBooksBySearch(searchDTO);
+    @GetMapping("/book/{title}/{author}/{genre}")
+    public List<Book> getSerchBooks(@PathVariable final String title,@PathVariable final String author,@PathVariable final String genre) {
+        return searchService.getBooksBySearch(title, author, genre);
     }
 
     @GetMapping("/{title}")

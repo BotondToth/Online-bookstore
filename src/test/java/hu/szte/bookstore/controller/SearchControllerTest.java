@@ -1,5 +1,7 @@
 package hu.szte.bookstore.controller;
 
+/*
+
 import hu.szte.bookstore.dto.SearchDTO;
 import hu.szte.bookstore.model.Book;
 import hu.szte.bookstore.service.SearchServiceImp;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.when;
  * @author Roland
  */
 
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
 
@@ -62,3 +65,5 @@ public class SearchControllerTest {
     }
 
 }
+
+*/
