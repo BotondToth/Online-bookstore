@@ -2,6 +2,14 @@ body {
   padding-top: 54px;
 }
 
+#loginBtn {
+  margin-left: 10px;
+}
+
+#logoutBtn, #basketBtn {
+  display: none;
+}
+
 @media (min-width: 992px) {
   body {
     padding-top: 56px;
