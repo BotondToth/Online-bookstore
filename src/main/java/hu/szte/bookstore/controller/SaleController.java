@@ -2,14 +2,18 @@ package hu.szte.bookstore.controller;
 
 import hu.szte.bookstore.dto.SaleDTO;
 import hu.szte.bookstore.mapper.SaleEntityAndDTOMapper;
-import hu.szte.bookstore.model.Book;
-import hu.szte.bookstore.model.Sale;
+import hu.szte.bookstore.model.*;
+import hu.szte.bookstore.repository.UserRepository;
+import hu.szte.bookstore.service.EmailSenderServiceImpl;
 import hu.szte.bookstore.service.SaleServiceImpl;
+import hu.szte.bookstore.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.itextpdf.text.*;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +31,11 @@ import java.util.Locale;
 public class SaleController extends BaseController {
 
     private final SaleServiceImpl saleService;
+
+    private final EmailSenderServiceImpl emailSenderService = new EmailSenderServiceImpl();
+
+    @Autowired
+    private final UserServiceImpl userService = null;
 
     private final List<String> basket = new ArrayList<>();
 
@@ -53,13 +62,14 @@ public class SaleController extends BaseController {
     }
 
     @GetMapping("/add/{username}")
-    public String createSale(@PathVariable final String username) {
+    public String createSale(@PathVariable final String username) throws DocumentException, IOException  {
         if(!basket.isEmpty()){
             final ResponseEntity sale = saleService.createSale(basket, username);
             if (sale.equals( new ResponseEntity(HttpStatus.OK))) {
+                emailSenderService.sendEmailAboutOrder(userService.getUserByEmail(username), this);
+                basket.clear();
                 return "Ok";
             }
-            basket.clear();
         }
         return "Hiba";
     }
@@ -85,6 +95,19 @@ public class SaleController extends BaseController {
         return "cleared";
     }
 
+    public List<Book> getBasket() {
+        final List<Book> books = new ArrayList<>();
+        basket.forEach(isbn -> {
+            books.add(saleService.getBookByISBN(isbn));
+        });
+        return books;
+    }
 
-
+    public int getBasketTotalSum() {
+        int totalSum = 0;
+        for(String isbn : basket) {
+            totalSum += saleService.getBookByISBN(isbn).getPrice();
+        }
+        return totalSum;
+    }
 }
