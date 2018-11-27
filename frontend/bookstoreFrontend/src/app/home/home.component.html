@@ -154,8 +154,8 @@
     </button>
   </div>
   <div class="modal-body">
-     <div class="form-group">
-       <!-- Itt kell majd kiirni a konyveket -->
+     <div class="form-group" *ngFor="let book of basket">
+       <p>{{book.title}} - {{book.price}} Ft</p>
      </div>
   </div>
   <div class="modal-footer">

@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   private user: any[];
 
   private basket: any[];
+  private username: string;
 
   private loggedIn: boolean;
 
@@ -62,6 +63,7 @@ export class HomeComponent implements OnInit {
           alert('Rossz email cím vagy jelszó!');
         } else {
           this.loggedIn = true;
+          this.username = userNameInput;
           this.basket = new Array();
           var hiddenElemens = document.getElementById("logoutBtn");
           hiddenElemens.style.display = "block";
@@ -69,6 +71,7 @@ export class HomeComponent implements OnInit {
           hiddenElemens.style.display = "none";
           hiddenElemens = document.getElementById("basketBtn");
           hiddenElemens.style.display = "block";
+          //login panel eltunjon
         }
     });
 
@@ -76,23 +79,41 @@ export class HomeComponent implements OnInit {
 
   addToBasket(isbn: string) {
     if (this.loggedIn == true) {
-      this.basket.push(isbn);
+      this.httpClient.get('http://localhost:8080/sale/isbn/'+isbn,  { responseType: 'text' }).subscribe((res : string)=>{
+        if (res === "Added") {
+          alert('A termék hozzáadva a kosárhoz!');
+        }
+      });
     } else {
       alert('A vásárláshoz jelentkezzen be!');
     }
   }
 
+  getBasketElements(){
+    this.httpClient.get('http://localhost:8080/sale/getbooks').subscribe((res : any[])=>{
+      this.basket = res;
+    });
+  }
+
+  openBasket(content) {
+    this.getBasketElements();
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
   checkout() {
-    var data = {};
-    data['purchasedItems'] = this.basket;
     if (this.loggedIn == true) {
-      this.httpClient.post('http://localhost:8080/sale/add', data, { responseType: 'text' });
+      this.httpClient.get('http://localhost:8080/sale/add/'+this.username ,  { responseType: 'text' }).subscribe((res : any[])=>{
+        if(res == "Ok"){
+          alert("Köszönjük a vásárlást");
+        }
+      });
     }
 
   }
 
   logout() {
     this.loggedIn = false;
+    this.username = "";
     var hiddenElemens = document.getElementById("logoutBtn");
     hiddenElemens.style.display = "none";
     hiddenElemens = document.getElementById("loginBtn");
