@@ -1,7 +1,10 @@
 package hu.szte.bookstore.service;
 
 import com.itextpdf.text.DocumentException;
+import hu.szte.bookstore.controller.SaleController;
 import hu.szte.bookstore.model.User;
+import hu.szte.bookstore.model.Book;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,9 @@ public class EmailSenderServiceImpl {
 
     @Value("${spring.mail.password}")
     private String passw = "konyvesbolt";
+
+    @Autowired
+    private SaleController saleController;
 
     public void sendEmailAboutOrder(final User user) throws DocumentException, IOException {
         log.info("Sending email to: " + " , about order");
@@ -79,7 +85,7 @@ public class EmailSenderServiceImpl {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "465");
         return props;
     }
 
@@ -103,8 +109,8 @@ public class EmailSenderServiceImpl {
         userDetails.setPaddingTop(50);
         priceTable.setPaddingTop(50);
         addTableHeader(table);
-//        addContentRows(table, user);
-//        addPriceParagraph(user, priceTable);
+        addContentRows(table, user);
+        addPriceParagraph(user, priceTable);
         document.add(titleParagraph);
         document.add(table);
         document.add(userDetails);
@@ -139,40 +145,33 @@ public class EmailSenderServiceImpl {
                 });
     }
 
-//    private void addContentRows(PdfPTable table, final User user) {
-//        for (BasketElementEntity entity : user.getBasketElements()) {
-//            table.addCell(entity.getTitle());
-//            table.addCell(entity.getAuthor());
-//            table.addCell(Integer.toString(entity.getCount()));
-//            table.addCell(entity.getPrice() + " Ft");
-//        }
-//
-//        table.completeRow();
-//    }
-//
-//    private void addPriceParagraph(final User user, PdfPTable priceTable) {
-//
-//        final int fullPrice = user.getBasket().getBasketPrice();
-//        double noVAT = fullPrice * 0.73;
-//        double reducedPrice = fullPrice;
-//        if (user.getDiscount() != 0) {
-//            reducedPrice = fullPrice - (fullPrice * user.getDiscount() * 0.05);
-//        }
-//        final String noVatFormatted = String.format("%.2f", noVAT);
-//        priceTable.addCell("Nettó ár:");
-//        priceTable.addCell(noVatFormatted + " Ft");
-//
-//        priceTable.addCell("Teljes összeg:");
-//        priceTable.addCell(fullPrice + " Ft");
-//
-//        priceTable.addCell("Törzsvásárlói kedvezmény:");
-//        priceTable.addCell(user.getDiscount() * 2 + "%");
-//
-//        priceTable.addCell("Fizetendő összeg:");
-//        priceTable.addCell(Math.round(reducedPrice) + " Ft");
-//
-//        priceTable.completeRow();
-//    }
+    private void addContentRows(PdfPTable table, final User user) {
+        for (Book book : saleController.getBasket()) {
+            table.addCell(book.getTitle());
+            table.addCell(book.getAuthor());
+            table.addCell(book.getPublisher());
+        }
+
+        table.completeRow();
+    }
+
+    private void addPriceParagraph(final User user, PdfPTable priceTable) {
+
+        final int fullPrice = saleController.getBasketTotalSum();
+        double noVAT = fullPrice * 0.73;
+        double reducedPrice = fullPrice;
+        final String noVatFormatted = String.format("%.2f", noVAT);
+        priceTable.addCell("Nettó ár:");
+        priceTable.addCell(noVatFormatted + " Ft");
+
+        priceTable.addCell("Teljes összeg:");
+        priceTable.addCell(fullPrice + " Ft");
+
+        priceTable.addCell("Fizetendő összeg:");
+        priceTable.addCell(Math.round(reducedPrice) + " Ft");
+
+        priceTable.completeRow();
+    }
 
     public LocalDate getTodaysDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -199,7 +198,6 @@ public class EmailSenderServiceImpl {
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
         message.setContent(multipart);
-        System.err.println(message.toString());
         Transport.send(message);
         log.info("Email sent about registration!");
     }
