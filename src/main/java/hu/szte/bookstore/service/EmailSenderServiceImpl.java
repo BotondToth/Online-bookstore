@@ -26,14 +26,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+@Service
 public class EmailSenderServiceImpl {
 
     private static final Logger log = Logger.getLogger(EmailSenderServiceImpl.class.getName());
 
-    @Value("konyvesbolt2018@gmail.com")
-    private String username = "konyvesbolt2018@gmail.com";
+    @Value("${spring.mail.username}")
+    private String username;
 
-    @Value("konyvesbolt")
+    @Value("${spring.mail.password}")
     private String passw = "konyvesbolt";
 
     public void sendEmailAboutOrder(final User user) throws DocumentException, IOException {
@@ -193,7 +194,7 @@ public class EmailSenderServiceImpl {
                 InternetAddress.parse(user.getEmail()));
         message.setSubject("Köszönjük a regisztrációt!");
         BodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setText("Kedves " + user.getFirstName() + "!\n\nKöszönjük, hogy regisztráltál könyvesboltunkba! Kellemes böngészést kívánunk!.\n\n"
+        messageBodyPart.setText("Kedves " + user.getLastName() + "!\n\nKöszönjük, hogy regisztráltál könyvesboltunkba! Kellemes böngészést kívánunk!.\n\n"
                 + " Könyvesbolt, 2018");
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);

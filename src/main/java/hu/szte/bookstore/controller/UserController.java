@@ -21,7 +21,8 @@ public class UserController extends BaseController {
 
     private final UserServiceImpl userService;
 
-    private EmailSenderServiceImpl emailSenderService = new EmailSenderServiceImpl();
+    @Autowired
+    private EmailSenderServiceImpl emailSenderService;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
