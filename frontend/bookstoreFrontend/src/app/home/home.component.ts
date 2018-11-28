@@ -39,9 +39,12 @@ export class HomeComponent implements OnInit {
 
   titleSearch() {
     let inputValue = (<HTMLInputElement>document.getElementById('searchBar')).value;
-    this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
-      this.books = res;
-    });
+    if(inputValue=="")this.get_books() ;
+    else{
+      this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
+        this.books = res;
+      });}
+    }
   }
 
   loginPanel(content) {
@@ -158,10 +161,10 @@ export class HomeComponent implements OnInit {
       if((<HTMLInputElement>document.getElementById('searchBar3')).value != ""){
         c = (<HTMLInputElement>document.getElementById('searchBar3')).value;
       }
-
+      if(a==" " && b == " " && c == "uresmezo")this.get_books(); else{
       this.httpClient.get('http://localhost:8080/search/book/'+ a + "/" + b + "/" + c).subscribe((res : any[])=>{
         this.books = res;
-      });
+      });}
 
     }
 
