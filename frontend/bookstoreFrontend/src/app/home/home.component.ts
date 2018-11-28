@@ -39,9 +39,11 @@ export class HomeComponent implements OnInit {
 
   titleSearch() {
     let inputValue = (<HTMLInputElement>document.getElementById('searchBar')).value;
-    this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
-      this.books = res;
-    });
+    if(inputValue=="")this.get_books();
+    else{
+      this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
+        this.books = res;
+      });}
   }
 
   loginPanel(content) {
@@ -59,20 +61,20 @@ export class HomeComponent implements OnInit {
     data['email'] = userNameInput;
     data['password'] = passwordInput;
     this.httpClient.post('http://localhost:8080/user/login', data, { responseType: 'text' }).subscribe((res : string)=>{
-        if (res=="") {
-          alert('Rossz email cím vagy jelszó!');
-        } else {
-          this.loggedIn = true;
-          this.username = userNameInput;
-          this.basket = new Array();
-          var hiddenElemens = document.getElementById("logoutBtn");
-          hiddenElemens.style.display = "block";
-          hiddenElemens = document.getElementById("loginBtn");
-          hiddenElemens.style.display = "none";
-          hiddenElemens = document.getElementById("basketBtn");
-          hiddenElemens.style.display = "block";
-          //login panel eltunjon
-        }
+      if (res=="") {
+        alert('Rossz email cím vagy jelszó!');
+      } else {
+        this.loggedIn = true;
+        this.username = userNameInput;
+        this.basket = new Array();
+        var hiddenElemens = document.getElementById("logoutBtn");
+        hiddenElemens.style.display = "block";
+        hiddenElemens = document.getElementById("loginBtn");
+        hiddenElemens.style.display = "none";
+        hiddenElemens = document.getElementById("basketBtn");
+        hiddenElemens.style.display = "block";
+        //login panel eltunjon
+      }
     });
 
   }
@@ -143,33 +145,35 @@ export class HomeComponent implements OnInit {
   }
 
   detailedSearch(){
-      let a = " ";
-      let b = " ";
-      let c = "uresmezo";
+    let a = " ";
+    let b = " ";
+    let c = "uresmezo";
 
-      if((<HTMLInputElement>document.getElementById('searchBar1')).value != ""){
-        a = (<HTMLInputElement>document.getElementById('searchBar1')).value;
-      }
+    if((<HTMLInputElement>document.getElementById('searchBar1')).value != ""){
+      a = (<HTMLInputElement>document.getElementById('searchBar1')).value;
+    }
 
-      if((<HTMLInputElement>document.getElementById('searchBar2')).value != ""){
-        b = (<HTMLInputElement>document.getElementById('searchBar2')).value;
-      }
+    if((<HTMLInputElement>document.getElementById('searchBar2')).value != ""){
+      b = (<HTMLInputElement>document.getElementById('searchBar2')).value;
+    }
 
-      if((<HTMLInputElement>document.getElementById('searchBar3')).value != ""){
-        c = (<HTMLInputElement>document.getElementById('searchBar3')).value;
-      }
+    if((<HTMLInputElement>document.getElementById('searchBar3')).value != ""){
+      c = (<HTMLInputElement>document.getElementById('searchBar3')).value;
+    }
 
+    if(a==" " && b == " " && c == "uresmezo") this.get_books();
+    else{
       this.httpClient.get('http://localhost:8080/search/book/'+ a + "/" + b + "/" + c).subscribe((res : any[])=>{
         this.books = res;
-      });
+      });}
 
-    }
+  }
 
-    showDetailedSearchForm(){
-      document.getElementById("detailedsearch").className = "form-inline";
-      document.getElementById("detailedsearch").style.display = "block";
-      document.getElementById("detailedsearchbutton").style.display = "none";
-    }
+  showDetailedSearchForm(){
+    document.getElementById("detailedsearch").className = "form-inline";
+    document.getElementById("detailedsearch").style.display = "block";
+    document.getElementById("detailedsearchbutton").style.display = "none";
+  }
 
 
   ngOnInit() {
