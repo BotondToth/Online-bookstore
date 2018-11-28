@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   private user: any[];
 
   private basket: any[];
+  private username: string;
 
   private loggedIn: boolean;
 
@@ -40,9 +41,9 @@ export class HomeComponent implements OnInit {
     let inputValue = (<HTMLInputElement>document.getElementById('searchBar')).value;
     if(inputValue=="")this.get_books();
     else{
-    this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
-      this.books = res;
-    });}
+      this.httpClient.get('http://localhost:8080/search/'+inputValue).subscribe((res : any[])=>{
+        this.books = res;
+      });}
   }
 
   loginPanel(content) {
@@ -60,41 +61,61 @@ export class HomeComponent implements OnInit {
     data['email'] = userNameInput;
     data['password'] = passwordInput;
     this.httpClient.post('http://localhost:8080/user/login', data, { responseType: 'text' }).subscribe((res : string)=>{
-        if (res=="") {
-          alert('Rossz email cím vagy jelszó!');
-        } else {
-          this.loggedIn = true;
-          this.basket = new Array();
-          var hiddenElemens = document.getElementById("logoutBtn");
-          hiddenElemens.style.display = "block";
-          hiddenElemens = document.getElementById("loginBtn");
-          hiddenElemens.style.display = "none";
-          hiddenElemens = document.getElementById("basketBtn");
-          hiddenElemens.style.display = "block";
-        }
+      if (res=="") {
+        alert('Rossz email cím vagy jelszó!');
+      } else {
+        this.loggedIn = true;
+        this.username = userNameInput;
+        this.basket = new Array();
+        var hiddenElemens = document.getElementById("logoutBtn");
+        hiddenElemens.style.display = "block";
+        hiddenElemens = document.getElementById("loginBtn");
+        hiddenElemens.style.display = "none";
+        hiddenElemens = document.getElementById("basketBtn");
+        hiddenElemens.style.display = "block";
+        //login panel eltunjon
+      }
     });
 
   }
 
   addToBasket(isbn: string) {
     if (this.loggedIn == true) {
-      this.basket.push(isbn);
+      this.httpClient.get('http://localhost:8080/sale/isbn/'+isbn,  { responseType: 'text' }).subscribe((res : string)=>{
+        if (res === "Added") {
+          alert('A termék hozzáadva a kosárhoz!');
+        }
+      });
     } else {
       alert('A vásárláshoz jelentkezzen be!');
     }
   }
 
+  getBasketElements(){
+    this.httpClient.get('http://localhost:8080/sale/getbooks').subscribe((res : any[])=>{
+      this.basket = res;
+    });
+  }
+
+  openBasket(content) {
+    this.getBasketElements();
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
   checkout() {
-    var data = {};
-    data['purchasedItems'] = this.basket;
     if (this.loggedIn == true) {
-      this.httpClient.post('http://localhost:8080/sale/add', data, { responseType: 'text' });
+      this.httpClient.get('http://localhost:8080/sale/add/'+this.username ,  { responseType: 'text' }).subscribe((res : string)=>{
+        if(res == "Ok"){
+          alert("Köszönjük a vásárlást");
+        }
+      });
     }
 
   }
 
   logout() {
     this.loggedIn = false;
+    this.username = "";
     var hiddenElemens = document.getElementById("logoutBtn");
     hiddenElemens.style.display = "none";
     hiddenElemens = document.getElementById("loginBtn");
@@ -124,35 +145,36 @@ export class HomeComponent implements OnInit {
   }
 
   detailedSearch(){
-      let a = " ";
-      let b = " ";
-      let c = "uresmezo";
+    let a = " ";
+    let b = " ";
+    let c = "uresmezo";
 
-      if((<HTMLInputElement>document.getElementById('searchBar1')).value != ""){
-        a = (<HTMLInputElement>document.getElementById('searchBar1')).value;
-      }
+    if((<HTMLInputElement>document.getElementById('searchBar1')).value != ""){
+      a = (<HTMLInputElement>document.getElementById('searchBar1')).value;
+    }
 
-      if((<HTMLInputElement>document.getElementById('searchBar2')).value != ""){
-        b = (<HTMLInputElement>document.getElementById('searchBar2')).value;
-      }
+    if((<HTMLInputElement>document.getElementById('searchBar2')).value != ""){
+      b = (<HTMLInputElement>document.getElementById('searchBar2')).value;
+    }
 
-      if((<HTMLInputElement>document.getElementById('searchBar3')).value != ""){
-        c = (<HTMLInputElement>document.getElementById('searchBar3')).value;
-      }
-      if(a==" " && b == " " && c == "uresmezo") this.get_books();
-      else{
+    if((<HTMLInputElement>document.getElementById('searchBar3')).value != ""){
+      c = (<HTMLInputElement>document.getElementById('searchBar3')).value;
+    }
+
+    if(a==" " && b == " " && c == "uresmezo") this.get_books();
+    else{
       this.httpClient.get('http://localhost:8080/search/book/'+ a + "/" + b + "/" + c).subscribe((res : any[])=>{
         this.books = res;
       });}
 
-    }
+  }
 
-    showDetailedSearchForm(){
-      document.getElementById("detailedsearch").className = "form-inline";
-      document.getElementById("detailedsearch").style.display = "block";
-      document.getElementById("detailedsearchbutton").style.display = "none";
-    }
-    
+  showDetailedSearchForm(){
+    document.getElementById("detailedsearch").className = "form-inline";
+    document.getElementById("detailedsearch").style.display = "block";
+    document.getElementById("detailedsearchbutton").style.display = "none";
+  }
+
 
   ngOnInit() {
   }
