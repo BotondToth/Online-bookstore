@@ -1,9 +1,7 @@
 package hu.szte.bookstore.controller;
 
-import hu.szte.bookstore.dto.SaleDTO;
-import hu.szte.bookstore.mapper.SaleEntityAndDTOMapper;
+import hu.szte.bookstore.exception.UserNotFoundException;
 import hu.szte.bookstore.model.*;
-import hu.szte.bookstore.repository.UserRepository;
 import hu.szte.bookstore.service.EmailSenderServiceImpl;
 import hu.szte.bookstore.service.SaleServiceImpl;
 import hu.szte.bookstore.service.UserServiceImpl;
@@ -23,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * Vasarlassal kapcsolatos endpoint-ok gyujtohelye
  * @author Botond
  */
 @RestController
@@ -61,12 +60,12 @@ public class SaleController extends BaseController {
         return saleService.getSalesByUserName(userName);
     }
 
-    @GetMapping("/add/{username}")
-    public String createSale(@PathVariable final String username) throws DocumentException, IOException  {
+    @GetMapping("/add/{username}/{used}")
+    public String createSale(@PathVariable final String username, @PathVariable  final int used) throws DocumentException, IOException, UserNotFoundException {
         if(!basket.isEmpty()){
             final ResponseEntity sale = saleService.createSale(basket, username);
             if (sale.equals( new ResponseEntity(HttpStatus.OK))) {
-                emailSenderService.sendEmailAboutOrder(userService.getUserByEmail(username), this);
+                emailSenderService.sendEmailAboutOrder(userService.getUserByEmail(username), this, used);
                 basket.clear();
                 return "Ok";
             }
@@ -105,7 +104,7 @@ public class SaleController extends BaseController {
 
     public int getBasketTotalSum() {
         int totalSum = 0;
-        for(String isbn : basket) {
+        for (String isbn : basket) {
             totalSum += saleService.getBookByISBN(isbn).getPrice();
         }
         return totalSum;

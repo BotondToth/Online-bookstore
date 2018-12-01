@@ -20,6 +20,11 @@ export class HomeComponent implements OnInit {
 
   private loggedIn: boolean;
 
+  private loginModalReference = null;
+  private registerModalReference = null;
+  private buyModalRefenrece = null;
+  private dialogModalReference = null;
+
   constructor(private httpClient: HttpClient, private modalService: NgbModal) {
     this.get_books()
   }
@@ -34,7 +39,7 @@ export class HomeComponent implements OnInit {
     this.httpClient.get('http://localhost:8080/books/isbn/'+isbn).subscribe((res : any[])=>{
       this.book = res;
     });
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+    this.dialogModalReference = this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
   }
 
   titleSearch() {
@@ -47,11 +52,11 @@ export class HomeComponent implements OnInit {
   }
 
   loginPanel(content) {
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+    this.loginModalReference = this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
   }
 
   openRegisterModal(content) {
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+    this.registerModalReference = this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
   }
 
   login() {
@@ -73,7 +78,7 @@ export class HomeComponent implements OnInit {
         hiddenElemens.style.display = "none";
         hiddenElemens = document.getElementById("basketBtn");
         hiddenElemens.style.display = "block";
-        //login panel eltunjon
+        this.loginModalReference.close();
       }
     });
 
@@ -84,10 +89,12 @@ export class HomeComponent implements OnInit {
       this.httpClient.get('http://localhost:8080/sale/isbn/'+isbn,  { responseType: 'text' }).subscribe((res : string)=>{
         if (res === "Added") {
           alert('A termék hozzáadva a kosárhoz!');
+          this.dialogModalReference.close();
         }
       });
     } else {
       alert('A vásárláshoz jelentkezzen be!');
+      this.dialogModalReference.close();
     }
   }
 
@@ -99,13 +106,15 @@ export class HomeComponent implements OnInit {
 
   openBasket(content) {
     this.getBasketElements();
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+    this.buyModalRefenrece = this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
   }
 
   checkout() {
     if (this.loggedIn == true) {
-      this.httpClient.get('http://localhost:8080/sale/add/'+this.username ,  { responseType: 'text' }).subscribe((res : string)=>{
+      let returnBookNum = (<HTMLInputElement>document.getElementById('returnBook')).value;
+      this.httpClient.get('http://localhost:8080/sale/add/'+this.username+'/'+returnBookNum ,  { responseType: 'text' }).subscribe((res : string)=>{
         if(res == "Ok"){
+          this.buyModalRefenrece.close();
           alert("Köszönjük a vásárlást");
         }
       });
@@ -122,6 +131,7 @@ export class HomeComponent implements OnInit {
     hiddenElemens.style.display = "block";
     hiddenElemens = document.getElementById("basketBtn");
     hiddenElemens.style.display = "none";
+    this.httpClient.get('http://localhost:8080/sale/clear');
   }
 
   register() {
@@ -137,7 +147,7 @@ export class HomeComponent implements OnInit {
     data['lastName'] = lastNameInput;
     if (passwordInput == passwordAgainInput) {
       this.httpClient.post('http://localhost:8080/user/register',data, { responseType: 'text' }).subscribe((res : string)=>{
-        console.log(res);
+        this.registerModalReference.close();
       });
     } else {
       alert('Jelszó nem egyezik!')
