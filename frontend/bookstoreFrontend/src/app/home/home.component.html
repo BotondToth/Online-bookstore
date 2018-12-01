@@ -159,6 +159,7 @@
      </div>
   </div>
   <div class="modal-footer">
+    <input id="returnBook" type="number" name="quantity" min="0" max="5" placeholder="Visszaváltandó könyvek" value="0">
     <button type="button" class="btn btn-outline-primary" (click)="modal.close('Close click')">Bezár</button>
     <button type="button" class="btn btn-danger" (click)="checkout()">Vásárlás</button>
   </div>
