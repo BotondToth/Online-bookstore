@@ -39,6 +39,11 @@ public class BookstoreController extends BaseController {
         return createGsonFromObject(bookstoreService.getBooksBetweenDate(from, to));
     }
 
+    @GetMapping("/isEmailTaken/{email}")
+    public boolean getEmailIsTaken(@PathVariable final String email) {
+        return bookstoreService.getEmailIsTaken(email);
+    }
+
     @GetMapping("/authors")
     public String getAllAuthors() {
         return createGsonFromObject(bookstoreService.getAllAuthors());

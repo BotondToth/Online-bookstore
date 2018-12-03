@@ -111,13 +111,18 @@ export class HomeComponent implements OnInit {
 
   checkout() {
     if (this.loggedIn == true) {
-      let returnBookNum = (<HTMLInputElement>document.getElementById('returnBook')).value;
-      this.httpClient.get('http://localhost:8080/sale/add/'+this.username+'/'+returnBookNum ,  { responseType: 'text' }).subscribe((res : string)=>{
-        if(res == "Ok"){
-          this.buyModalRefenrece.close();
-          alert("Köszönjük a vásárlást");
-        }
-      });
+      let returnBookNum = parseInt((<HTMLInputElement>document.getElementById('returnBook')).value);
+      if (returnBookNum <= 5) {
+        this.httpClient.get('http://localhost:8080/sale/add/'+this.username+'/'+returnBookNum ,  { responseType: 'text' }).subscribe((res : string)=>{
+          if(res == "Ok"){
+            this.buyModalRefenrece.close();
+            alert("Köszönjük a vásárlást");
+          }
+        });
+      } else {
+          alert("Legfeljebb 5 könyv váltható vissza!")
+      }
+      
     }
 
   }
@@ -146,8 +151,14 @@ export class HomeComponent implements OnInit {
     data['firstName'] = firstNameInput;
     data['lastName'] = lastNameInput;
     if (passwordInput == passwordAgainInput) {
-      this.httpClient.post('http://localhost:8080/user/register',data, { responseType: 'text' }).subscribe((res : string)=>{
-        this.registerModalReference.close();
+      this.httpClient.get('http://localhost:8080/books/isEmailTaken/'+emailInput,{ responseType: 'text' }).subscribe((res : string)=>{
+        if (res == "true") {
+          alert('Ez az email cím már foglalt!')
+        } else {
+          this.httpClient.post('http://localhost:8080/user/register',data, { responseType: 'text' }).subscribe((res : string)=>{
+            this.registerModalReference.close();
+          });
+        }
       });
     } else {
       alert('Jelszó nem egyezik!')

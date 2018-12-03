@@ -8,6 +8,7 @@ import hu.szte.bookstore.mapper.AuthorMapperFunction;
 import hu.szte.bookstore.mapper.PublisherMapperFunction;
 import hu.szte.bookstore.model.Book;
 import hu.szte.bookstore.repository.BookRepository;
+import hu.szte.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +24,26 @@ public class BookstoreServiceImpl {
 
     private final BookRepository bookRepository;
 
+    private final UserRepository userRepository;
+
     private final AuthorMapperFunction authorMapper;
 
     private final PublisherMapperFunction publisherMapper;
 
     @Autowired
-    public BookstoreServiceImpl(BookRepository bookRepository) {
+    public BookstoreServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
         this.authorMapper = new AuthorMapperFunction();
         publisherMapper = new PublisherMapperFunction();
     }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
+    }
+
+    public boolean getEmailIsTaken(final String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
     public Book getBookByIsbn(final String isbn) throws BookNotFoundException {
